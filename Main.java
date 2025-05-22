@@ -1,0 +1,96 @@
+import java.util.Scanner;
+
+public class Main {
+
+    private static void direc() {
+        System.out.println("Welcome to the Budget Manager!");
+        System.out.println("This program helps you manage your budget by tracking income and expenses.");
+        System.out.println("You can add transactions, view your balance, and generate reports.");
+        System.out.println("Let's get started!");
+        System.out.println();
+        System.out.println( "1. Open New File");
+        System.out.println("2. Open Existing File");
+    }
+
+    private static void Menu() {
+        System.out.println("=== Budget Manager ===");
+        System.out.println("1. Add Transaction");
+        System.out.println("2. View Transactions");
+        System.out.println("3. Show Balance");
+        System.out.println("4. Exit");
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        BudgetManager budgetManager = new BudgetManager();
+
+        while (true) {           
+
+            Menu();
+            System.out.print("Choose an option: ");
+            int choice2 = scanner.nextInt();
+
+            switch (choice2) {
+                case 1:
+                    System.out.println("");
+
+                    System.out.print("Enter transaction amount: ");
+                    while (!scanner.hasNextDouble()) {
+                        System.out.print("Invalid input. Please enter a number: ");
+                        scanner.next(); // clear invalid input
+                    }
+                    double amount = scanner.nextDouble();
+                    while (amount <= 0) {
+                        System.out.print("Invalid amount. Please enter a positive number: ");
+                        while (!scanner.hasNextDouble()) {
+                            System.out.print("Invalid input. Please enter a number: ");
+                            scanner.next();
+                        }
+                        amount = scanner.nextDouble();
+                    }
+
+
+                    System.out.print("Enter transaction type (income/expense): ");
+                    String type = scanner.next();
+                    while (!("income".contains(type)) && !("expense".contains(type))) {
+                        System.out.print("Invalid type. Please enter 'income' or 'expense': ");
+                        type = scanner.next();
+                    }
+                    if ("income".contains(type) && !(type.equalsIgnoreCase("e"))) {
+                        type = "Income";
+                    }
+                    if  ("expense".contains(type)) {
+                        type = "Expense";
+                    }
+
+                    Transaction transaction = new Transaction(type, amount);
+                    budgetManager.addTransaction(transaction);
+
+                    System.out.println("");
+                    break;
+                case 2:
+                    System.out.println("");
+
+                    budgetManager.viewTransactions();
+
+                    System.out.println("");
+                    break;
+                case 3:
+                    System.out.println("");
+
+                    System.out.println("Summary of Transactions:");
+                    System.out.println("===================================");
+                    budgetManager.printSummary();
+
+                    System.out.println("");
+                    break;
+                case 4:
+                    System.out.println("");
+                    System.out.println("Exiting...");
+                    return;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
+    }
+}
