@@ -2,14 +2,12 @@ import java.util.Scanner;
 
 public class Main {
 
-    private static void direc() {
-        System.out.println("Welcome to the Budget Manager!");
-        System.out.println("This program helps you manage your budget by tracking income and expenses.");
-        System.out.println("You can add transactions, view your balance, and generate reports.");
-        System.out.println("Let's get started!");
-        System.out.println();
-        System.out.println( "1. Open New File");
-        System.out.println("2. Open Existing File");
+    enum Category {
+        FOOD,
+        TRANSPORT,
+        ENTERTAINMENT,
+        UTILITIES,
+        OTHER
     }
 
     private static void Menu() {
@@ -17,9 +15,10 @@ public class Main {
         System.out.println("1. Add Transaction");
         System.out.println("2. View Transactions");
         System.out.println("3. Show Balance");
-        System.out.println("4. Save");
-        System.out.println("5. Load");
-        System.out.println("6. Exit");
+        System.out.println("4. Categorical Summary");
+        System.out.println("5. Save");
+        System.out.println("6. Load");
+        System.out.println("7. Exit");
         System.out.println("=======================");
     }
 
@@ -67,11 +66,31 @@ public class Main {
                         type = "Expense";
                     }
 
-                    Transaction transaction = new Transaction(type, amount);
-                    budgetManager.addTransaction(transaction);
+                    if (type.equals("Expense")) {
+
+                        System.out.print("Enter transaction category: ");
+                        String cat = scanner.next();
+                        switch(cat.toUpperCase()) {
+                            case "FOOD", "TRANSPORT", "ENTERTAINMENT", "UTILITIES":
+                                cat = cat.toUpperCase();
+                                break;
+                            default:
+                                System.out.println("Not a category. Defaulting to OTHER.");
+                                cat = "OTHER";
+                                break;
+                        }
+                        Transaction transaction = new Transaction(type, amount, cat);
+                        budgetManager.addTransaction(transaction);
+                    }
+                    else {
+                        Transaction transaction = new Transaction(type, amount);
+                        budgetManager.addTransaction(transaction);
+                    }
+
 
                     System.out.println("");
                     break;
+
                 case 2:
                     System.out.println("");
 
@@ -90,6 +109,11 @@ public class Main {
                     break;
                 case 4:
                     System.out.println("");
+                    budgetManager.cateSummary();
+                    System.out.println("");
+                    break;
+                case 5:
+                    System.out.println("");
 
                     System.out.println("Enter a filename for the saved transactions: ");
 
@@ -103,7 +127,7 @@ public class Main {
                     
                     System.out.println("");
                     break;
-                case 5:
+                case 6:
                     System.out.println("");
 
                     System.out.println("Enter a filename to load transactions from: ");
@@ -115,7 +139,7 @@ public class Main {
                    
                     System.out.println("");
                     break;
-                case 6:
+                case 7:
                     System.out.println("Exiting...");
                     return;
                 default:

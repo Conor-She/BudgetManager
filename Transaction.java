@@ -3,13 +3,23 @@ public class Transaction {
     //private String description;
     private double amount;
     private boolean check;
-    //private String category;
+    private String category;
 
+    // Income
     public Transaction(String type, double amount) {
         this.type = type;
         this.amount = amount;
         System.out.println("Transaction created: " + type + " of amount $" + amount);
         this.check = false;
+    }
+
+    // Expense
+    public Transaction(String type, double amount, String category) {
+        this.type = type;
+        this.amount = amount;
+        System.out.println("Transaction created: " + type + " of amount $" + amount);
+        this.check = false;
+        this.category = category;
     }
 
     public String getType() {
@@ -28,5 +38,8 @@ public class Transaction {
         this.check = true;
     }
 
+    public String getCategory() {
+        return this.category;
+    }
 
 }
