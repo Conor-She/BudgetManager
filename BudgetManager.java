@@ -1,4 +1,9 @@
 import java.util.ArrayList;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class BudgetManager {
     private int bank;
@@ -50,10 +55,35 @@ public class BudgetManager {
     }
 
     public void saveToFile(String filename) {
-
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+            for (Transaction transaction : transactions) {
+                writer.write(String.format("%s,%.2f\n", transaction.getType(), transaction.getAmount()));
+            }
+            System.out.println("Transactions saved to " + filename);
+        } catch (IOException e) {
+            System.err.println("Error saving to file: " + e.getMessage());
+        }
      }
 
     public void loadFromFile(String filename) { 
+        transactions.clear(); // Clear existing transactions
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length == 2) {
+                    String type = parts[0].trim();
+                    double amount = Double.parseDouble(parts[1].trim());
+                    Transaction transaction = new Transaction(type, amount);
+                    transactions.add(transaction);
+                }
+            }
+            System.out.println("Transactions loaded from " + filename);
+        }catch (IOException e) {
+            System.out.println("Error loading file: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            System.out.println("Error parsing transaction amount: " + e.getMessage());
+        }
 
      }
 }

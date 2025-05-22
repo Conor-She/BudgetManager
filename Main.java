@@ -17,12 +17,16 @@ public class Main {
         System.out.println("1. Add Transaction");
         System.out.println("2. View Transactions");
         System.out.println("3. Show Balance");
-        System.out.println("4. Exit");
+        System.out.println("4. Save");
+        System.out.println("5. Load");
+        System.out.println("6. Exit");
+        System.out.println("=======================");
     }
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         BudgetManager budgetManager = new BudgetManager();
+        String[] parts;
 
         while (true) {           
 
@@ -86,6 +90,34 @@ public class Main {
                     break;
                 case 4:
                     System.out.println("");
+
+                    System.out.println("Enter a filename for the saved transactions: ");
+
+                    String filenameS = scanner.next();
+                    filenameS = filenameS + ".csv";
+
+                    budgetManager.saveToFile(filenameS);
+
+                    System.out.println("Transactions saved to " + filenameS);
+                    System.out.println("You can open the file in a spreadsheet program like Excel or Google Sheets.");
+                    
+                    System.out.println("");
+                    break;
+                case 5:
+                    System.out.println("");
+
+                    System.out.println("Enter a filename to load transactions from: ");
+                   
+                    String filenameL = scanner.next();
+                    filenameL = filenameL + ".csv";
+
+                    budgetManager.loadFromFile(filenameL);
+                   
+                    System.out.println("Transactions loaded from " + filenameL);
+                   
+                    System.out.println("");
+                    break;
+                case 6:
                     System.out.println("Exiting...");
                     return;
                 default:
