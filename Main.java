@@ -94,7 +94,7 @@ public class Main {
                     System.out.println("Enter a filename for the saved transactions: ");
 
                     String filenameS = scanner.next();
-                    filenameS = filenameS + ".csv";
+                    filenameS = budgetManager.getAvailableFilename(filenameS, "csv");
 
                     budgetManager.saveToFile(filenameS);
 
@@ -112,8 +112,6 @@ public class Main {
                     filenameL = filenameL + ".csv";
 
                     budgetManager.loadFromFile(filenameL);
-                   
-                    System.out.println("Transactions loaded from " + filenameL);
                    
                     System.out.println("");
                     break;
